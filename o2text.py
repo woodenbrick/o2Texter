@@ -29,6 +29,17 @@ class O2Texter(object):
                 #we assume the user is giving us 2 arguments: a number/phonebook user
                 #and the message
                 to = sys.argv[1]
+                try:
+                    to = int(to)
+                except ValueError:
+                    result = self.cursor.execute("""SELECT number FROM phonebook WHERE
+                                        name=?""", (to.title(),)).fetchone()
+                    if result is None:
+                        print 'No user with that name exists in the phonebook'
+                        return
+                    else:
+                        to = result[0]
+
                 message = " ".join(sys.argv[2:])
                 if self.login():
                     self.send_text(to, message)
@@ -111,7 +122,6 @@ class O2Texter(object):
 
         fp = ClientCookie.urlopen("http://sendtxt.o2.co.uk/sendtxt/action/compose")
         form = ClientForm.ParseResponse(fp)[1]
-        print form
         form["compose.to"] = to
         form["compose.message"] = message
         fp = ClientCookie.urlopen(form.click(nr=10))
