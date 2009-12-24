@@ -29,7 +29,7 @@ class O2Texter(object):
                 #we assume the user is giving us 2 arguments: a number/phonebook user
                 #and the message
                 to = sys.argv[1]
-                message = sys.argv[2:]
+                message = " ".join(sys.argv[2:])
                 if self.login():
                     self.send_text(to, message)
         except IndexError:
@@ -111,9 +111,9 @@ class O2Texter(object):
 
         fp = ClientCookie.urlopen("http://sendtxt.o2.co.uk/sendtxt/action/compose")
         form = ClientForm.ParseResponse(fp)[1]
+        print form
         form["compose.to"] = to
         form["compose.message"] = message
-        print form
         fp = ClientCookie.urlopen(form.click(nr=10))
         fp.close()
         
