@@ -1,11 +1,11 @@
 #!/usr/bin/env python
-import sys
-sys.path.append("authclients")
+import os
 import cPickle
-import ClientForm
-import cookielib as ClientCookie
-import gtk
+from authclients import ClientForm
 import cookielib
+import urllib2
+import gtk
+
 
 class WebForm(object):
     def __init__(self, HOME_DIR):
@@ -28,12 +28,12 @@ class WebForm(object):
         Returns True if login was successful else False"""
         while gtk.events_pending():
             gtk.main_iteration(False)
-        cookieJar = ClientCookie.CookieJar()
-        opener = ClientCookie.build_opener(ClientCookie.HTTPCookieProcessor(cookieJar))
+        cookieJar = cookielib.CookieJar()
+        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(cookieJar))
         opener.addheaders = [("User-agent","Mozilla/5.0 (compatible)")]
-        ClientCookie.install_opener(opener)
+        urllib2.install_opener(opener)
         try:
-            fp = ClientCookie.urlopen("https://www.o2.co.uk/login")
+            fp = urllib2.urlopen("https://www.o2.co.uk/login")
         except:
             self.error = "Problem connecting to O2."
             return False
@@ -44,7 +44,7 @@ class WebForm(object):
         form = forms[1]
         form["USERNAME"]  = username
         form["PASSWORD"] = password
-        fp = ClientCookie.urlopen(form.click())
+        fp = urllib2.urlopen(form.click())
         for line in fp.readlines():
             if line.startswith('<META HTTP-EQUIV="Refresh" CONTENT="0; URL=http://www.o2.co.uk/">'):
                 fp.close()
@@ -63,7 +63,7 @@ class WebForm(object):
         self.compose_form.find_control("compose.paymentType").set(paid_setting, "paid")
         self.compose_form["compose.to"] = to
         self.compose_form["compose.message"] = message
-        fp = ClientCookie.urlopen(self.compose_form.click(nr=10))
+        fp = urllib2.urlopen(self.compose_form.click(nr=10))
         fp.close()
         
     
@@ -71,7 +71,7 @@ class WebForm(object):
         
         while gtk.events_pending():
             gtk.main_iteration(False)
-        fp = ClientCookie.urlopen("http://sendtxt.o2.co.uk/sendtxt/action/compose")
+        fp = urllib2.urlopen("http://sendtxt.o2.co.uk/sendtxt/action/compose")
         
         for line in fp:
             if line.startswith("var freeSmsRemaining"):
@@ -82,7 +82,7 @@ class WebForm(object):
         tree.select_valid_radio_button()
 
         if not self.load_form(self.HOME_DIR + os.sep + "form.pickle"):
-            fp = ClientCookie.urlopen("http://sendtxt.o2.co.uk/sendtxt/action/compose")
+            fp = urllib2.urlopen("http://sendtxt.o2.co.uk/sendtxt/action/compose")
             self.compose_form = ClientForm.ParseResponse(fp)[1]
             f = open(self.HOME_DIR + os.sep + "form.pickle", "w")
             cPickle.dump(self.compose_form, f)
