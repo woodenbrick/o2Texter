@@ -179,6 +179,9 @@ class O2Texter(object):
             self.set_radio_button("paid", self.paid_texts, clean=True)
             
 
-        
-texter = O2Texter()
-gtk.main()
+def run():
+    texter = O2Texter()
+    gtk.main()
+
+if __name__ == "__main__":
+    run()

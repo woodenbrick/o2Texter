@@ -1,0 +1,4 @@
+#!/usr/bin/python
+from o2texter import o2text
+
+o2text.run()
