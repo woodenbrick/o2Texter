@@ -3,7 +3,7 @@ import sys
 sys.path.append("authclients")
 import cPickle
 import ClientForm
-import ClientCookie
+import cookielib as ClientCookie
 import gtk
 import cookielib
 
@@ -81,10 +81,10 @@ class WebForm(object):
                 break
         tree.select_valid_radio_button()
 
-        if not self.load_form("form.pickle"):
+        if not self.load_form(self.HOME_DIR + os.sep + "form.pickle"):
             fp = ClientCookie.urlopen("http://sendtxt.o2.co.uk/sendtxt/action/compose")
             self.compose_form = ClientForm.ParseResponse(fp)[1]
-            f = open("form.pickle", "w")
+            f = open(self.HOME_DIR + os.sep + "form.pickle", "w")
             cPickle.dump(self.compose_form, f)
             f.close()
             
