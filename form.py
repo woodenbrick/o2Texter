@@ -3,9 +3,10 @@ import sys
 sys.path.append("authclients")
 import cPickle
 import ClientForm
-import ClientCookie
+#import ClientCookie
 import gtk
-from authclients.ClientCookie._LWPCookieJar import LWPCookieJar
+import cookielib
+
 class WebForm(object):
     def __init__(self, HOME_DIR):
         self.HOME_DIR = HOME_DIR
@@ -27,7 +28,11 @@ class WebForm(object):
         Returns True if login was successful else False"""
         while gtk.events_pending():
             gtk.main_iteration(False)
-        cookieJar = ClientCookie.CookieJar()        
+         = cookielib.LWPCookieJar(self.HOME_DIR + "testing")
+        
+        cookieJar = ClientCookie.CookieJar()
+        cookieJar = LWPCookieJar()
+        cookieJar.save(self.HOME_DIR + "tester")
         opener = ClientCookie.build_opener(ClientCookie.HTTPCookieProcessor(cookieJar))
         opener.addheaders = [("User-agent","Mozilla/5.0 (compatible)")]
         ClientCookie.install_opener(opener)
