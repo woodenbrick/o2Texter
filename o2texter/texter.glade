@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Jan 11 14:49:25 2010 -->
+<!--Generated with glade3 3.4.5 on Mon Jan 11 22:15:26 2010 -->
 <glade-interface>
   <widget class="GtkWindow" id="texter">
+    <property name="title" translatable="yes">O2Texter</property>
     <property name="window_position">GTK_WIN_POS_CENTER_ALWAYS</property>
+    <property name="icon">phone.png</property>
     <signal name="destroy" handler="gtk_main_quit"/>
     <child>
       <widget class="GtkVBox" id="vbox2">
@@ -173,7 +175,11 @@
     </child>
   </widget>
   <widget class="GtkWindow" id="phonebook">
+    <property name="width_request">400</property>
+    <property name="height_request">400</property>
+    <property name="title" translatable="yes">O2Texter - Phonebook</property>
     <property name="window_position">GTK_WIN_POS_CENTER_ALWAYS</property>
+    <property name="icon">phone.png</property>
     <signal name="delete_event" handler="close_phonebook"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
@@ -299,6 +305,9 @@
     </child>
   </widget>
   <widget class="GtkWindow" id="login_window">
+    <property name="title" translatable="yes">O2Texter - Login</property>
+    <property name="window_position">GTK_WIN_POS_CENTER_ALWAYS</property>
+    <property name="icon">phone.png</property>
     <signal name="destroy" handler="gtk_main_quit"/>
     <child>
       <widget class="GtkVBox" id="vbox3">
@@ -307,31 +316,37 @@
           <widget class="GtkHBox" id="hbox8">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkLabel" id="nothing">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Username:</property>
-              </widget>
-            </child>
-            <child>
               <widget class="GtkEntry" id="uname">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="padding">6</property>
+                <property name="pack_type">GTK_PACK_END</property>
                 <property name="position">1</property>
               </packing>
             </child>
+            <child>
+              <widget class="GtkLabel" id="nothing">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Username:</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">GTK_PACK_END</property>
+              </packing>
+            </child>
           </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="padding">10</property>
+          </packing>
         </child>
         <child>
           <widget class="GtkHBox" id="hbox9">
             <property name="visible">True</property>
-            <child>
-              <widget class="GtkLabel" id="label7">
-                <property name="visible">True</property>
-                <property name="label" translatable="yes">Password:</property>
-              </widget>
-            </child>
             <child>
               <widget class="GtkEntry" id="pass">
                 <property name="visible">True</property>
@@ -339,11 +354,27 @@
                 <property name="visibility">False</property>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="padding">5</property>
+                <property name="pack_type">GTK_PACK_END</property>
                 <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="label7">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Password:</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="pack_type">GTK_PACK_END</property>
               </packing>
             </child>
           </widget>
           <packing>
+            <property name="expand">False</property>
+            <property name="padding">10</property>
             <property name="position">1</property>
           </packing>
         </child>
@@ -376,6 +407,8 @@
             </child>
           </widget>
           <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
             <property name="position">2</property>
           </packing>
         </child>
