@@ -64,7 +64,7 @@ class Phonebook(object):
         result = self.cursor.execute("""SELECT number from phonebook
                                      WHERE name=?""", (name,)).fetchone()
         try:
-            return result[0][0]
+            return result[0]
         except IndexError:
-            return None
+            return name
         

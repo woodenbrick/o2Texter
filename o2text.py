@@ -50,6 +50,7 @@ class O2Texter(object):
         
         self.free_texts = 0
         self.paid_texts = 0
+        self.message_count = 0
         self.set_limits(self.tree.get_widget("free").get_active())
         
         #get username and password
@@ -86,15 +87,15 @@ class O2Texter(object):
     def textbody_changed(self, textbody, key):
         char_count = textbody.get_buffer().get_char_count()
         if char_count < 1:
-            message_count = 0
+            self.message_count = 0
         elif char_count < self.total_limit / 3:
-            message_count = 1
+            self.message_count = 1
         elif char_count < (self.total_limit / 3) * 2:
-            message_count = 2
+            self.message_count = 2
         else:
-            message_count = 3
+            self.message_count = 3
         self.tree.get_widget("character_count").set_text("%s/%s %s/3" % (
-            char_count, self.total_limit, message_count))
+            char_count, self.total_limit, self.message_count))
         if char_count > self.total_limit:
             self.tree.get_widget("main_info").set_text("Maximum of %s characters allowed.  Please shorten your message" % self.total_limit)
             self.tree.get_widget("send").set_sensitive(False)
@@ -114,15 +115,14 @@ class O2Texter(object):
         else:
             self.total_limit = 480
             
-    def set_radio_button(self, widgetname, line):
-        counter = int(line.strip(";\r\n").split(" = ")[1])
+    def set_radio_button(self, widgetname, counter, clean=False):
+        if not clean:
+            counter = int(counter.strip(";\r\n").split(" = ")[1])
         self.tree.get_widget(widgetname).set_label("%s %s texts remaining" % (
             counter, widgetname))
         self.tree.get_widget(widgetname).set_sensitive(counter)
         return counter
     
-    def on_send_clicked(self, button):
-        pass
     
     def on_clear_clicked(self, button):
         pass
@@ -170,6 +170,15 @@ class O2Texter(object):
         self.form.send_message(number, message, self.tree.get_widget("free").get_active())
         self.tree.get_widget("main_info").set_text("")
         buffer.set_text("")
+        #deduct messages
+        if self.tree.get_widget("free").get_active():
+            self.free_texts -= self.message_count
+            self.set_radio_button("free", self.free_texts, clean=True)
+        else:
+            self.paid_texts -= self.message_count
+            self.set_radio_button("paid", self.paid_texts, clean=True)
+            
+
         
 texter = O2Texter()
 gtk.main()

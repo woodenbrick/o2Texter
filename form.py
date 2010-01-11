@@ -3,7 +3,7 @@ import sys
 sys.path.append("authclients")
 import cPickle
 import ClientForm
-#import ClientCookie
+import ClientCookie
 import gtk
 import cookielib
 
@@ -28,11 +28,7 @@ class WebForm(object):
         Returns True if login was successful else False"""
         while gtk.events_pending():
             gtk.main_iteration(False)
-         = cookielib.LWPCookieJar(self.HOME_DIR + "testing")
-        
         cookieJar = ClientCookie.CookieJar()
-        cookieJar = LWPCookieJar()
-        cookieJar.save(self.HOME_DIR + "tester")
         opener = ClientCookie.build_opener(ClientCookie.HTTPCookieProcessor(cookieJar))
         opener.addheaders = [("User-agent","Mozilla/5.0 (compatible)")]
         ClientCookie.install_opener(opener)
@@ -61,15 +57,15 @@ class WebForm(object):
         
         
     def send_message(self, to, message, free):
-        print self.compose_form
-        setting = 1 if free else 0
-        self.compose_form.find_control("compose.paymentType").set(setting, "free")
-        return
+        free_setting = 1 if free else 0
+        paid_setting = not free_setting
+        self.compose_form.find_control("compose.paymentType").set(free_setting, "free")
+        self.compose_form.find_control("compose.paymentType").set(paid_setting, "paid")
         self.compose_form["compose.to"] = to
         self.compose_form["compose.message"] = message
-        #self.compose_form["compose.paymentType"]
-        fp = ClientCookie.urlopen(self.form.click(nr=10))
+        fp = ClientCookie.urlopen(self.compose_form.click(nr=10))
         fp.close()
+        
     
     def get_compose_form(self, tree):
         
@@ -83,8 +79,9 @@ class WebForm(object):
             elif line.startswith("var paidSmsRemaining"):
                 tree.paid_texts = tree.set_radio_button("paid", line)
                 break
+        tree.select_valid_radio_button()
 
-        if not self.load_form():
+        if not self.load_form("form.pickle"):
             fp = ClientCookie.urlopen("http://sendtxt.o2.co.uk/sendtxt/action/compose")
             self.compose_form = ClientForm.ParseResponse(fp)[1]
             f = open("form.pickle", "w")
