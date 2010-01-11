@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Jan 11 00:35:18 2010 -->
+<!--Generated with glade3 3.4.5 on Mon Jan 11 14:49:25 2010 -->
 <glade-interface>
   <widget class="GtkWindow" id="texter">
     <property name="window_position">GTK_WIN_POS_CENTER_ALWAYS</property>
@@ -88,6 +88,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="response_id">0</property>
+                <signal name="clicked" handler="on_send_clicked"/>
                 <child>
                   <widget class="GtkHBox" id="hbox6">
                     <property name="visible">True</property>

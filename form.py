@@ -5,21 +5,21 @@ import cPickle
 import ClientForm
 import ClientCookie
 import gtk
-
+from authclients.ClientCookie._LWPCookieJar import LWPCookieJar
 class WebForm(object):
     def __init__(self, HOME_DIR):
         self.HOME_DIR = HOME_DIR
 
     
-    def load_form(self):
-        """Return true if form was loaded from pickle"""
+    def load_form(self, pickle_name):
+        """Return form if it was loaded from pickle else None"""
         try:
-            f = open(self.HOME_DIR + "form.pickle", "r")
-            self.compose_form = cPickle.load(f)
+            f = open(self.HOME_DIR + pickle_name, "r")
+            form = compose_form = cPickle.load(f)
             f.close()
-            return True
+            return form
         except IOError:
-            return False
+            return None
         
     
     def login(self, username, password):
@@ -55,9 +55,14 @@ class WebForm(object):
                 return False
         
         
-    def send_text(self, to, message):
-        self.form["compose.to"] = to
-        self.form["compose.message"] = message
+    def send_message(self, to, message, free):
+        print self.compose_form
+        setting = 1 if free else 0
+        self.compose_form.find_control("compose.paymentType").set(setting, "free")
+        return
+        self.compose_form["compose.to"] = to
+        self.compose_form["compose.message"] = message
+        #self.compose_form["compose.paymentType"]
         fp = ClientCookie.urlopen(self.form.click(nr=10))
         fp.close()
     

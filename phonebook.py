@@ -59,3 +59,12 @@ class Phonebook(object):
         else false"""
         #re.match()
         return number
+    
+    def get_number(self, name):
+        result = self.cursor.execute("""SELECT number from phonebook
+                                     WHERE name=?""", (name,)).fetchone()
+        try:
+            return result[0][0]
+        except IndexError:
+            return None
+        

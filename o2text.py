@@ -33,6 +33,9 @@ class O2Texter(object):
         self.phonebook = Phonebook(HOME_DIR + os.sep + "phonebook", self.tree)
         self.form = WebForm(HOME_DIR)
         self.tree.signal_autoconnect(self.phonebook)
+        self.tree.get_widget("texter").show()
+        while gtk.events_pending():
+            gtk.main_iteration(True)
         #create column for phonebook
         col = gtk.TreeViewColumn("Name")
         cell = gtk.CellRendererText()
@@ -54,7 +57,6 @@ class O2Texter(object):
             f = open("username", "r")
             self.username, self.password = cPickle.load(f)
             f.close()
-            print 'show now'
             self.tree.get_widget("texter").show()
             self.tree.get_widget("main_info").set_text("Logging in...")
             if self.form.login(self.username, self.password):
@@ -156,6 +158,18 @@ class O2Texter(object):
         iter = model.get_iter(path)
         self.tree.get_widget("name").set_text(model.get_value(iter,0))
         self.tree.get_widget("textbody").grab_focus()
-
+    
+    def on_send_clicked(self, button):
+        self.tree.get_widget("main_info").set_text("Sending message...")
+        while gtk.events_pending():
+            gtk.main_iteration(False)
+        buffer = self.tree.get_widget("textbody").get_buffer()
+        message = buffer.get_text(*buffer.get_bounds()).strip()
+        #check this is a valid number or name in db
+        number = self.phonebook.get_number(self.tree.get_widget("name").get_text())
+        self.form.send_message(number, message, self.tree.get_widget("free").get_active())
+        self.tree.get_widget("main_info").set_text("")
+        buffer.set_text("")
+        
 texter = O2Texter()
 gtk.main()
