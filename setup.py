@@ -11,7 +11,7 @@ VERSION = '0.01'
 glade = glob.glob("*.glade")
 desc = """Send texts through o2 web interface to UK phones"""
 
-long_desc = """The program requires that you have a o2 phone"""
+long_desc = """The program requires that you have an o2 phone"""
 setup ( name = PROGRAM_NAME,
         version = VERSION,
         description = desc,
@@ -19,9 +19,9 @@ setup ( name = PROGRAM_NAME,
         author = 'Daniel Woodhouse',
         author_email = 'wodemoneke@gmail.com',
         license = 'GPLv3',
-        packages = ['o2texter', "o2texter.authclients", "o2texter.authclients.ClientCookie"],
+        packages = ['o2texter'],
         data_files = [
             ('share/applications/', ['o2texter.desktop']),
-            ('share/o2texter/', ["o2texter/texter.glade"]),
+            ('share/o2texter/', ["o2texter/texter.glade", 'o2texter/phone.png']),
             ('bin/', ['bin/o2texter'])],
 )
