@@ -1,0 +1,10 @@
+
+[Desktop Entry]
+Type=Application
+Name=O2Texter
+Comment=Send texts from your O2 web account
+Exec=/usr/bin/o2texter
+Terminal=false
+Categories=Network;
+StartupNotify=false
+Icon=/usr/share/o2texter/phone.png
