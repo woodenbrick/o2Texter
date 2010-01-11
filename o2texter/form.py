@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 import os
 import cPickle
-from authclients import ClientForm
+import ClientForm
 import cookielib
 import urllib2
 import gtk
