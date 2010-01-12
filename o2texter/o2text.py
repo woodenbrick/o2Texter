@@ -33,7 +33,7 @@ class O2Texter(object):
         self.phonebook = Phonebook(HOME_DIR + os.sep + "phonebook", self.tree)
         self.form = WebForm(HOME_DIR)
         self.tree.signal_autoconnect(self.phonebook)
-        self.tree.get_widget("texter").show()
+        #self.tree.get_widget("texter").show()
         while gtk.events_pending():
             gtk.main_iteration(True)
         #create column for phonebook
@@ -78,7 +78,7 @@ class O2Texter(object):
         f.close()
         self.tree.get_widget("login_window").hide()
         self.tree.get_widget("texter").show()
-        if self.login():
+        if self.form.login():
             self.get_compose_form()
     
     def change_case(self, entry, *args):
