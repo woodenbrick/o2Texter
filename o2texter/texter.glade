@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Mon Jan 11 22:25:33 2010 -->
+<!--Generated with glade3 3.4.5 on Tue Jan 12 11:59:33 2010 -->
 <glade-interface>
   <widget class="GtkWindow" id="texter">
     <property name="title" translatable="yes">O2Texter</property>
@@ -44,6 +44,7 @@
             <property name="height_request">200</property>
             <property name="visible">True</property>
             <property name="can_focus">True</property>
+            <property name="wrap_mode">GTK_WRAP_WORD</property>
             <signal name="key_release_event" handler="textbody_changed"/>
           </widget>
           <packing>
@@ -192,10 +193,18 @@
       <widget class="GtkVBox" id="vbox1">
         <property name="visible">True</property>
         <child>
-          <widget class="GtkTreeView" id="phone_treeview">
+          <widget class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
-            <signal name="row_activated" handler="choose_from_phonebook"/>
+            <property name="hscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+            <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
+            <child>
+              <widget class="GtkTreeView" id="phone_treeview">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <signal name="row_activated" handler="choose_from_phonebook"/>
+              </widget>
+            </child>
           </widget>
         </child>
         <child>
@@ -309,7 +318,7 @@
                 <property name="label" translatable="yes">gtk-delete</property>
                 <property name="use_stock">True</property>
                 <property name="response_id">0</property>
-                <signal name="clicked" handler="on_delete_clicked"/>
+                <signal name="clicked" handler="delete_from_phonebook"/>
               </widget>
               <packing>
                 <property name="position">1</property>

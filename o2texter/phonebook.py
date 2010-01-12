@@ -43,12 +43,32 @@ class Phonebook(object):
                             (?, ?)""", (name, number))
             self.conn.commit()
             self.tree.get_widget("phonebook_info").set_text(
-                "New user %s (%s) added to Phonebook" % (name, number))
+                "%s added" % name)
             model.append([name, number])
         self.tree.get_widget("new_name").set_text("")
         self.tree.get_widget("new_number").set_text("")
-        
     
+    def delete_from_phonebook(self, button):
+        model, iter = self.tree.get_widget("phone_treeview").get_selection().get_selected()
+        if iter is None:
+            self.tree.get_widget("phonebook_info").set_text("Please select an entry to delete")
+        else:
+            message = gtk.MessageDialog(
+                None, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
+                gtk.BUTTONS_YES_NO,"Are you sure you want to delete %s (%s)?" % (
+                    model.get_value(iter, 0), model.get_value(iter, 1)))
+            resp = message.run()
+            if resp == gtk.RESPONSE_YES:
+                self.cursor.execute("""DELETE FROM phonebook WHERE name=?""", (
+                    model.get_value(iter,0),))
+                self.conn.commit()
+            self.tree.get_widget("phonebook_info").set_text(
+                "%s deleted" % model.get_value(iter, 0))
+            model.remove(iter)
+            message.destroy()
+            
+            
+            
     def update_name_completer(self):
         result = self.conn.execute("""SELECT * FROM phonebook""").fetchall()
         completer = gtk.EntryCompletion()
