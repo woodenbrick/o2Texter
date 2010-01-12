@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Jan 12 12:06:20 2010 -->
+<!--Generated with glade3 3.4.5 on Tue Jan 12 12:06:40 2010 -->
 <glade-interface>
   <widget class="GtkWindow" id="texter">
     <property name="title" translatable="yes">O2Texter</property>
@@ -200,7 +200,7 @@
             <property name="vscrollbar_policy">GTK_POLICY_AUTOMATIC</property>
             <child>
               <widget class="GtkTreeView" id="phone_treeview">
-                <property name="height_request">100</property>
+                <property name="height_request">200</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <signal name="row_activated" handler="choose_from_phonebook"/>

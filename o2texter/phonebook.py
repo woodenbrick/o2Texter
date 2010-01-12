@@ -20,7 +20,13 @@ class Phonebook(object):
         number = self.tree.get_widget("new_number").get_text()
         result = self.cursor.execute("""SELECT * FROM phonebook WHERE name=?""",
                                      (name,)).fetchall()
-        if len(result) != 0:
+        if not self.check_number(number):
+            self.tree.get_widget("phonebook_info").set_text("Error: Invalid number")
+            return
+        elif name == "":
+            self.tree.get_widget("phonebook_info").set_text("Error: Invalid name")
+            return
+        elif len(result) != 0:
             message = gtk.MessageDialog(
                 None, gtk.DIALOG_MODAL, gtk.MESSAGE_INFO,
                 gtk.BUTTONS_YES_NO,"%s (%s) already exists in your phonebook. Overwrite?" % (
@@ -31,13 +37,10 @@ class Phonebook(object):
                     number, name))
                 self.conn.commit()
                 for path in model:
-                    print path[0]
                     if path[0] == name:
                         path[1] = number
                         break
             message.destroy()
-        elif not self.check_number(number):
-            self.tree.get_widget("phonebook_info").set_text("Error: Invalid number")
         else:
             self.cursor.execute("""INSERT INTO phonebook (name, number) VALUES
                             (?, ?)""", (name, number))
@@ -87,8 +90,17 @@ class Phonebook(object):
         """Checks if a phone number is valid
         returns the phone number in the correct format if True
         else false"""
-        #re.match()
-        return number
+        #check if it starts with international code and make sure this is UK
+        if number.startswith("+"):
+            if not number.startswith("+44"):
+                return False
+            return number
+        else:
+            try:
+                int(number)
+                return number
+            except ValueError:
+                return False
     
     def get_number(self, name):
         result = self.cursor.execute("""SELECT number from phonebook
