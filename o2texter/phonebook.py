@@ -15,8 +15,9 @@ class Phonebook(object):
         self.update_name_completer()
     
     def add_to_phonebook(self, button):
-        name = self.tree.get_widget("new_name").title()
-        number = self.tree.get_widget("new_number")
+        model = self.tree.get_widget("phone_treeview").get_model()
+        name = self.tree.get_widget("new_name").get_text().title()
+        number = self.tree.get_widget("new_number").get_text()
         result = self.cursor.execute("""SELECT * FROM phonebook WHERE name=?""",
                                      (name,)).fetchall()
         if len(result) != 0:
@@ -25,10 +26,15 @@ class Phonebook(object):
                 gtk.BUTTONS_YES_NO,"%s (%s) already exists in your phonebook. Overwrite?" % (
                     result[0][0], result[0][1]))
             resp = message.run()
-            if resp == gtk.YES:
+            if resp == gtk.RESPONSE_YES:
                 self.cursor.execute("""UPDATE phonebook set number=? WHERE name=?""", (
                     number, name))
                 self.conn.commit()
+                for path in model:
+                    print path[0]
+                    if path[0] == name:
+                        path[1] = number
+                        break
             message.destroy()
         elif not self.check_number(number):
             self.tree.get_widget("phonebook_info").set_text("Error: Invalid number")
@@ -38,6 +44,10 @@ class Phonebook(object):
             self.conn.commit()
             self.tree.get_widget("phonebook_info").set_text(
                 "New user %s (%s) added to Phonebook" % (name, number))
+            model.append([name, number])
+        self.tree.get_widget("new_name").set_text("")
+        self.tree.get_widget("new_number").set_text("")
+        
     
     def update_name_completer(self):
         result = self.conn.execute("""SELECT * FROM phonebook""").fetchall()
@@ -49,7 +59,7 @@ class Phonebook(object):
         completer.set_popup_completion(True)
         completer.set_inline_completion(True)
         for r in result:
-            liststore.append([r[0], "(%s)" % r[1]])
+            liststore.append([r[0], r[1]])
         #set the phonebook model here also since it is the same
         self.tree.get_widget("phone_treeview").set_model(liststore)
         
