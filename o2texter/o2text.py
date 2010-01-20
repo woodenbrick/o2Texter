@@ -55,7 +55,7 @@ class O2Texter(object):
         
         #get username and password
         try:
-            f = open("username", "r")
+            f = open(self.HOME_DIR + os.sep + "username", "r")
             self.username, self.password = cPickle.load(f)
             f.close()
             self.tree.get_widget("texter").show()
