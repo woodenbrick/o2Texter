@@ -73,7 +73,7 @@ class O2Texter(object):
     def login_clicked(self, *args):
         self.username = self.tree.get_widget("uname").get_text()
         self.password = self.tree.get_widget("pass").get_text()
-        f = open("username", "w")
+        f = open(self.HOME_DIR + os.sep + "username", "w")
         cPickle.dump([self.username, self.password], f)
         f.close()
         self.tree.get_widget("login_window").hide()
